@@ -20,9 +20,9 @@ public abstract class Player {
         return this.name;
     }
 
-    public abstract int pickPlacementLocation();
-
     public String getWinMsg() {
         return String.format("%s has won!!", name);
     }
+
+    public abstract int pickPlacementLocation();
 }
