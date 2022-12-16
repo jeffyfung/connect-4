@@ -5,7 +5,6 @@ import java.util.InputMismatchException;
 import java.lang.Math;
 
 public class MyConnectFour {
-	// TODO: check encapsulation
 
 	static final int CONJUNCTIVE_COUNTER_TO_WIN = 4;
 	static final String QUIT_CMD = ".quit";
@@ -109,48 +108,6 @@ public class MyConnectFour {
 		}
 	}
 
-	// private int getUserInput() {
-	// String userInput = null;
-	// System.out.println(String.format("Enter a column number between 1 and %d:",
-	// board.getColCount()));
-	// System.out.println(String.format("Enter %s to quit the game:",
-	// MyConnectFour.QUIT_CMD));
-
-	// try {
-	// userInput = input.readLine();
-
-	// // check if the user wants to terminate the game
-	// if (userInput.equals(MyConnectFour.QUIT_CMD)) {
-	// System.out.println("\nThis game is terminated early.");
-	// System.exit(0);
-	// }
-
-	// int position = Integer.parseInt(userInput);
-	// // check if the input number is a valid column number
-	// if (!(position >= 1 && position <= board.getColCount())) {
-	// throw new InputMismatchException(
-	// String.format("Invalid input - only accept a number between 1 and %d",
-	// board.getColCount()));
-	// }
-	// // check if the target column is full
-	// if (board.getEmptyCounterSlotAmount(position - 1) == 0) {
-	// throw new InputMismatchException(String.format("Invalid input - column %d is
-	// full", position));
-	// }
-	// return position;
-	// } catch (IOException e) {
-	// System.err.println("IO Error when obtaining user input:");
-	// return getUserInput();
-	// } catch (NumberFormatException e) {
-	// System.err.println(String.format("Failed to parse integer from str [%s]:",
-	// userInput));
-	// return getUserInput();
-	// } catch (InputMismatchException e) {
-	// System.err.println(e.getMessage());
-	// return getUserInput();
-	// }
-	// }
-
 	// 0 indexed column
 	private void runTurn(Player player) {
 		System.out.println();
@@ -167,12 +124,10 @@ public class MyConnectFour {
 			System.out.println(player.getWinMsg());
 			winner = player.getName();
 			return;
+		} else if (maxConjunctiveCounters > 1 && player.getName().equals("Computer")) {
+			System.out.println(
+					String.format("Hint: Computer has gotten %s conjunctive counters", maxConjunctiveCounters));
 		}
-		// else if (maxConjunctiveCounters == CONJUNCTIVE_COUNTER_TO_WIN - 1 &&
-		// player.getName().equals("Computer")) {
-		// System.out.println("Be careful! Computer has gotten 3 conjunctive
-		// counters!");
-		// }
 
 		if (board.getEmptyCounterSlotAmount() == 0) {
 			System.out.println("The game has ended in a draw");
