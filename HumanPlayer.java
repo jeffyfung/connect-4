@@ -3,15 +3,28 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.InputMismatchException;
 
+/**
+ * Subclass of player
+ */
 public class HumanPlayer extends Player {
 
-    BufferedReader input;
+    private BufferedReader input;
 
+    /**
+     * Constructor method..
+     * 
+     * @return a HumanPlayer object.
+     */
     public HumanPlayer(String name, Counter.Shape counterShape, Board board) {
         super(name, counterShape, board);
         input = new BufferedReader(new InputStreamReader(System.in));
     }
 
+    /**
+     * Get user input on the location of placement for the counter
+     * 
+     * @return column index of the board.
+     */
     public int pickPlacementLocation() {
         String userInput = null;
         System.out.println();

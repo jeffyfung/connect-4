@@ -4,9 +4,12 @@ import java.io.InputStreamReader;
 import java.util.InputMismatchException;
 import java.lang.Math;
 
+/**
+ * Overarching class for the game.
+ */
 public class MyConnectFour {
 
-	static final int CONJUNCTIVE_COUNTER_TO_WIN = 4;
+	// constant - fixed game setting
 	static final String QUIT_CMD = ".quit";
 
 	Board board;
@@ -15,11 +18,20 @@ public class MyConnectFour {
 	BufferedReader input;
 	boolean humanStartFirst;
 	String winner;
+	int conjunctiveCounterToWin;
 
+	/**
+	 * Constructor method. Run the set up of the game.
+	 * 
+	 * @return a MyConnectFour object.
+	 */
 	public MyConnectFour() {
 		System.out.println("Welcome to Connect 4.");
 		System.out.println("You will be playing against a computer player.");
 
+		conjunctiveCounterToWin = 4;
+
+		// create board - tight coupling of modules
 		board = new Board(6, 7);
 		input = new BufferedReader(new InputStreamReader(System.in));
 
@@ -27,6 +39,7 @@ public class MyConnectFour {
 		String userName = getUserName();
 		Counter.Shape userCounterShape = getUserCounterShape();
 		Counter.Shape computerCounterShape = Counter.getOther(userCounterShape);
+		// create players - tight coupling of modules
 		human = new HumanPlayer(userName, userCounterShape, board);
 		computer = new ComputerPlayer("Computer", computerCounterShape, board);
 
@@ -43,10 +56,14 @@ public class MyConnectFour {
 		System.out.println();
 	}
 
-	// could have generalised getUserName & getUserCounterShape the resultant code
-	// will be even longer
-	// build a generic method and a custom class to hold the validation criterions
+	/**
+	 * Get user name from user input.
+	 * 
+	 * @return user name.
+	 */
 	private String getUserName() {
+		// could have generalised getUserName & getUserCounterShape but the resultant
+		// code will be longer
 		String userInput = null;
 		System.out.println();
 		System.out.println(String.format("What is your name?:"));
@@ -66,6 +83,11 @@ public class MyConnectFour {
 		}
 	}
 
+	/**
+	 * Get user preferred counter shape from user input.
+	 * 
+	 * @return counter shape.
+	 */
 	private Counter.Shape getUserCounterShape() {
 		String userInput = null;
 		System.out.println();
@@ -89,6 +111,10 @@ public class MyConnectFour {
 		}
 	}
 
+	/**
+	 * Run the game by looping the turns until a player wins or the game ends in a
+	 * draw.
+	 */
 	public void play() {
 		try {
 			System.out.println("To play the game, type in the number of the column you want to drop your counter in.");
@@ -98,6 +124,7 @@ public class MyConnectFour {
 
 			boolean humanTurn = humanStartFirst;
 			while (winner == null) {
+				// each iteration is a player's turn
 				Player player = humanTurn ? human : computer;
 				runTurn(player);
 				humanTurn = !humanTurn;
@@ -108,7 +135,12 @@ public class MyConnectFour {
 		}
 	}
 
-	// 0 indexed column
+	/**
+	 * Run a player (human / computer)'s turn. Generalised to accomodate both
+	 * HumanPlayer's turn and ComputerPlayer's turn.
+	 * 
+	 * @param player human or computer player
+	 */
 	private void runTurn(Player player) {
 		System.out.println();
 		System.out.println(String.format("%s's turn", player.getName()));
@@ -119,16 +151,20 @@ public class MyConnectFour {
 		board.printBoard();
 		System.out.println();
 
+		// check how many counters are connected vertically, horizontally or diagonally
 		int maxConjunctiveCounters = board.checkConjunctiveCounters(player.getCounterShape());
-		if (maxConjunctiveCounters >= CONJUNCTIVE_COUNTER_TO_WIN) {
+		if (maxConjunctiveCounters >= conjunctiveCounterToWin) {
 			System.out.println(player.getWinMsg());
 			winner = player.getName();
 			return;
 		} else if (maxConjunctiveCounters > 1 && player.getName().equals("Computer")) {
+			// provide hint to the user if computer has gotten more than 1 consecutive
+			// tokens
 			System.out.println(
 					String.format("Hint: Computer has gotten %s conjunctive counters", maxConjunctiveCounters));
 		}
 
+		// check if the board is filled up
 		if (board.getEmptyCounterSlotAmount() == 0) {
 			System.out.println("The game has ended in a draw");
 			winner = "draw";
