@@ -4,7 +4,7 @@ Connect4 is a classic board game where two players take turns dropping colored d
 
 ## Features
 
-- Interactive gameplay with a graphical display in the command line
+- Interactive gameplay in the terminal
 - Single-player mode: play against the computer
 
 ## Installation
