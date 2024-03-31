@@ -11,10 +11,6 @@ Connect4 is a classic board game where two players take turns dropping colored d
 
 1. Clone the repository:
 
-```shell
-git clone https://github.com/your-username/connect4.git
-```
-
 2. Navigate to the project directory:
 
 ```shell
